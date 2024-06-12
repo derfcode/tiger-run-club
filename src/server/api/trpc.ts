@@ -9,6 +9,17 @@
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { createClient } from "@supabase/supabase-js";
+import {
+  type NextApiRequest,
+  type NextApiResponse,
+} from "@trpc/server/adapters/next";
+
+// Supabase client setup
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 /**
  * 1. CONTEXT
@@ -22,9 +33,13 @@ import { ZodError } from "zod";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (
+  opts: { req?: NextApiRequest; res?: NextApiResponse; headers: Headers },
+) => {
+  // Include Supabase client in the context
   return {
     ...opts,
+    supabase,
   };
 };
 
@@ -42,8 +57,9 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       ...shape,
       data: {
         ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
+        zodError: error.cause instanceof ZodError
+          ? error.cause.flatten()
+          : null,
       },
     };
   },

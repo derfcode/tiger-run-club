@@ -17,9 +17,9 @@ To read more about using these font, please visit the Next.js documentation:
 - App Directory: https://nextjs.org/docs/app/building-your-application/optimizing/fonts
 - Pages Directory: https://nextjs.org/docs/pages/building-your-application/optimizing/fonts
 **/
-import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
 import Link from "next/link";
+import { CreateUser } from "~/app/_components/create-user";
+import Image from "next/image";
 
 export function HeroSection() {
   return (
@@ -38,14 +38,7 @@ export function HeroSection() {
               </p>
             </div>
             <div className="w-full max-w-sm space-y-2">
-              <form className="flex space-x-2">
-                <Input
-                  className="max-w-lg flex-1"
-                  placeholder="Enter your email"
-                  type="email"
-                />
-                <Button type="submit">Get Started</Button>
-              </form>
+              <CreateUser />
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 Sign up to unlock exclusive features and early access.
                 <Link className="underline underline-offset-2" href="#">
@@ -54,12 +47,12 @@ export function HeroSection() {
               </p>
             </div>
           </div>
-          <img
+          <Image
             alt="Hero"
             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
-            height="310"
+            height={310}
             src="/placeholder.svg"
-            width="550"
+            width={550}
           />
         </div>
       </div>
